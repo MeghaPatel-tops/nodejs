@@ -5,6 +5,7 @@ require('./Db/db.js');
 
 
 const app = express();
+app.use(express.static('public'));
 const port = process.env.PORT;
 app.use('/api/',adminroutes);
 
