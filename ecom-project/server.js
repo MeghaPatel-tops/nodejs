@@ -3,11 +3,13 @@ const express= require('express');
 const adminroutes = require('./Routes/adminroutes.js')
 const userRoutes = require('./Routes/userroutes.js')
 require('./Db/db.js');
+const cors = require("cors");
 
 
 const app = express();
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(express.static('public'));
 const port = process.env.PORT;
 app.use('/api/',adminroutes);

@@ -7,6 +7,7 @@ const env= require('dotenv').config();
 const { ObjectId } = require('mongodb');
 const Razorpay = require("razorpay");
 const Order = require('../Model/OrderModel.js')
+const crypto = require("node:crypto");
 
 
 
@@ -128,5 +129,45 @@ const createOrder = async(req,res,cb,err)=>{
     }
 }
 
+const verifyPayments = async(req,res)=>{
+     const {
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature
+    } = req.body;
 
-module.exports = {reg,login,addToCart,viewCart,updateCart,deleteCart,createOrder    }
+    if (!razorpay_order_id || !razorpay_payment_id ||
+        !razorpay_signature) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing payment details"
+        });
+    }
+
+    const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORSECRET)
+        .update(razorpay_order_id + "|" + razorpay_payment_id)
+        .digest("hex");
+
+    const valid =
+        expectedSignature.length === razorpay_signature.length &&
+        crypto.timingSafeEqual(
+            Buffer.from(expectedSignature),
+            Buffer.from(razorpay_signature)
+        );
+
+    if (!valid) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid payment signature"
+        });
+    }
+
+    res.json({
+        success: true,
+        message: "Payment signature verified"
+    });
+}
+
+
+module.exports = {reg,login,addToCart,viewCart,updateCart,deleteCart,createOrder ,verifyPayments   }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { reg,login, addToCart, viewCart, updateCart, deleteCart, createOrder } = require('../Controller/UserController');
+const { reg,login, addToCart, viewCart, updateCart, deleteCart, createOrder, verifyPayments } = require('../Controller/UserController');
 const Router = express.Router();
 const multer = require('multer');
 const upload = multer();
@@ -130,7 +130,7 @@ Router.post(
         console.log('Body:', req.body);
         next();
     },
-    Auth,
+    // Auth,
     (req, res) => {
         console.log(req.body)
         createOrder(req, res, (data) => {
@@ -141,6 +141,21 @@ Router.post(
         });
     }
 );
+
+Router.post("/payament/verify",
+ (req, res, next) => {
+        console.log('1. Request received');
+        next();
+    },
+    upload.none(),
+    (req, res, next) => {
+        console.log('2. Multer completed');
+        console.log('Body:', req.body);
+        next();
+    }
+, (req, res) => {
+     verifyPayments(req,res);
+});
 
 
 

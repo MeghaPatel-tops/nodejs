@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Payment</title>
+</head>
+<body>
+
+    <h2>Product: T-Shirt</h2>
+    <h3>Price: ₹500</h3>
+
+    <button onclick="payNow()">Pay Now</button>
+
+    <p id="result"></p>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        async function payNow() {
+
+            const request = await fetch('http://localhost:3000/order-gen',  {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            amount: 50000,
+                            currency: "INR"
+                        })
+                    });
+                const orderData = await request.json();
+            console.log(orderData);
+            
+
+            var options = {
+                key: "rzp_test_TopClXtYGN4KU0",
+                amount: orderData.amount,
+                currency: orderData.ordercurrency,
+                name: "My E-commerce Store",
+                description: "T-Shirt Purchase",
+
+                // Use an order ID created by your backend
+                order_id: orderData.orderID,
+
+                handler: async function (response) {
+                    document.getElementById("result").innerHTML =
+                        "Payment completed.<br>" +
+                        "Payment ID: " +
+                        response.razorpay_payment_id;
+
+                    console.log(response);
+                    const request = await fetch('http://localhost:3000/payament/verify',  {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(response)
+
+                    });
+                const req = await request.json();
+                    console.log(req);
+
+                    // Send the response to your backend
+                    // for signature verification.
+                },
+
+                prefill: {
+                    name: "Customer Name",
+                    email: "customer@example.com",
+                    contact: "9999999999"
+                },
+
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+
+            var razorpay = new Razorpay(options);
+
+            razorpay.on("payment.failed", function (response) {
+                document.getElementById("result").innerText =
+                    "Payment failed: " +
+                    response.error.description;
+            });
+
+            razorpay.open();
+        }
+    </script>
+
+</body>
+</html>

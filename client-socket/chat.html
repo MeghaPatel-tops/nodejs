@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Chat App</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+ <script src="script.js" defer></script>
+    <style>
+        body {
+            background: #eef2f7;
+        }
+
+        .chat-container {
+            height: 90vh;
+            min-height: 500px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px #00000015;
+        }
+
+        .contact {
+            cursor: pointer;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact:hover {
+            background: #f0f5ff;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #0d6efd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .received {
+            background: white;
+            border: 1px solid #eee;
+            border-top-left-radius: 0;
+        }
+
+        .sent {
+            background: #0d6efd;
+            color: white;
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+
+        @media (max-width: 767px) {
+            .chat-container {
+                height: 95vh;
+                min-height: 400px;
+            }
+
+            .contact-sidebar {
+                display: none;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            body {
+                padding: 5px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-3">
+
+<div class="container-fluid">
+    <div class="row chat-container">
+
+        <!-- Contacts Sidebar -->
+        <div class="col-md-4 col-lg-3 p-0 border-end contact-sidebar">
+            <div class="p-3 bg-primary text-white">
+                <h4 class="mb-0">My Chats</h4>
+                <small>Stay connected</small>
+            </div>
+
+            <div class="p-3">
+                <input type="text" class="form-control"
+                       placeholder="Search contacts...">
+            </div>
+
+            <div class="contact d-flex align-items-center gap-3">
+                <div class="avatar">RP</div>
+                <div>
+                    <h6 class="mb-1">Rahul Patel</h6>
+                    <small class="text-muted">Hello, how are you?</small>
+                </div>
+                <span class="badge bg-success ms-auto">2</span>
+            </div>
+
+            <div class="contact d-flex align-items-center gap-3">
+                <div class="avatar bg-success">AS</div>
+                <div>
+                    <h6 class="mb-1">Anjali Shah</h6>
+                    <small class="text-muted">See you tomorrow!</small>
+                </div>
+            </div>
+
+            <div class="contact d-flex align-items-center gap-3">
+                <div class="avatar bg-warning">VK</div>
+                <div>
+                    <h6 class="mb-1">Viral Kumar</h6>
+                    <small class="text-muted">Thank you 😊</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="col-12 col-md-8 col-lg-9 p-0 d-flex flex-column">
+
+            <!-- Chat Header -->
+            <div class="d-flex align-items-center gap-3 p-3 border-bottom">
+                <button class="btn btn-outline-primary d-md-none"
+                        onclick="alert('Contact list is hidden on mobile.')">
+                    ☰
+                </button>
+
+                <div class="avatar">RP</div>
+
+                <div>
+                    <h6 class="mb-0">Rahul Patel</h6>
+                    <small class="text-success">Online</small>
+                </div>
+
+                <button class="btn btn-outline-secondary ms-auto">
+                    ⋮
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages d-flex flex-column" id="messages">
+                <div class="text-center mb-3">
+                    <span class="badge text-bg-light">Today</span>
+                </div>
+
+                
+            </div>
+
+            <!-- Message Input -->
+            <form class="p-3 border-top bg-white d-flex gap-2"
+                  id="chatForm">
+                <button type="button" class="btn btn-light">📎</button>
+
+                <input type="text" class="form-control"
+                       id="messageInput"
+                       placeholder="Type a message..."
+                       autocomplete="off"
+                       required>
+
+                <button type="submit" class="btn btn-primary px-4">
+                    Send
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+</script>
+
+</body>
+</html>
