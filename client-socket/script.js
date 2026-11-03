@@ -16,7 +16,11 @@ form.addEventListener('submit', (e) => {
   
     socket.emit('sendMsg', msg)
 
-    socket.on('revMsg', (msg) => {
+    input.value=""
+
+   
+})
+ socket.on('revMsg', (msg) => {
         
         const message = document.createElement("div");
         message.className = "message received";
@@ -35,4 +39,3 @@ form.addEventListener('submit', (e) => {
 
         messages.appendChild(message)
     })
-})

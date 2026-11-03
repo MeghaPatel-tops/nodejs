@@ -20,17 +20,13 @@ const io = new Server(server, {
 });
 
 
-
-
-
-
 io.on('connection',(socket)=>{
     console.log("connection created");
     socket.emit('connection','Connecttion created from server')
 
     socket.on('sendMsg',(msg)=>{
         console.log(msg)
-          socket.emit('revMsg',msg)
+        io.emit('revMsg',msg)
     })
 })
 
